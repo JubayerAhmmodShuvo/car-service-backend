@@ -2,7 +2,7 @@ import { Model } from 'mongoose';
 import { UserRole } from '../../../enum/user';
 
 export type IUser = {
-  toObject?: any;
+  
   _id?: string;
   password: string;
   role?: string | undefined;
@@ -11,6 +11,10 @@ export type IUser = {
   address?: string;
   budget?: number;
   income?: number;
+  bloodGroup?: string;
+  bio?: string;
+  gender?: string;
+  number?: string;
 };
 
 export type UserModel = {

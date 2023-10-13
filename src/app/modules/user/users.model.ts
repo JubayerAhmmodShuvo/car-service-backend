@@ -10,6 +10,13 @@ const userSchema = new Schema<IUser, UserModel>(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     role: { type: String, default: 'user' },
+        address: { type: String }, 
+    budget: { type: Number }, 
+    income: { type: Number }, 
+    bloodGroup: { type: String }, 
+    bio: { type: String }, 
+    gender: { type: String },
+    number:{type:Number}
   },
   {
     timestamps: true,

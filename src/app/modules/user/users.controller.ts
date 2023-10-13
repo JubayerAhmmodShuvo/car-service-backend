@@ -3,8 +3,9 @@ import httpStatus from 'http-status';
 import sendResponse from '../../../shared/sendResponse';
 import { UserService } from './users.service';
 import catchAsync from '../../../shared/catchAsync';
-import { IUser } from './users.interface';
+import { IUser, UserModel } from './users.interface';
 import jwt from 'jsonwebtoken';
+import User from './users.model';
 
 const getAllUsers: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
@@ -22,6 +23,7 @@ const getUserById: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const { id } = req.params;
     const user = await UserService.getUserById(id);
+    console.log(user);
     if (user) {
       sendResponse(res, {
         statusCode: httpStatus.OK,
@@ -35,16 +37,22 @@ const getUserById: RequestHandler = catchAsync(
 
 const updateUserById: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
-    const { id } = req.params;
-    const user = await UserService.updateUserById(id, req.body);
-    if (user) {
-      sendResponse(res, {
-        statusCode: httpStatus.OK,
-        success: true,
-        message: 'User updated successfully',
-        data: user,
-      });
-    }
+    try {
+      const { id } = req.params;
+
+      const updatedData = req.body;
+
+      const user = await UserService.updateUserById(id, updatedData);
+
+      if (user) {
+        sendResponse(res, {
+          statusCode: httpStatus.OK,
+          success: true,
+          message: 'User updated successfully',
+          data: user,
+        });
+      }
+    } catch (error) {}
   }
 );
 
@@ -63,66 +71,9 @@ const deleteUserById: RequestHandler = catchAsync(
   }
 );
 
-interface UserPayload extends jwt.JwtPayload {
-  id: string;
-}
-const getMyProfile: RequestHandler = catchAsync(
-  async (req: Request, res: Response) => {
-    const { id } = req.user as UserPayload;
-
-    const user = await UserService.getProfile(id);
-    if (user) {
-      sendResponse(res, {
-        statusCode: httpStatus.OK,
-        success: true,
-        message: 'User retrieved successfully',
-        data: user,
-      });
-    }
-  }
-);
-
-const updateMyProfile: RequestHandler = catchAsync(
-  async (req: Request, res: Response) => {
-    const { id } = req.user as UserPayload;
-
-    const updatedData = req.body;
-
-    try {
-      const user = await UserService.getProfile(id);
-
-      if (!user) {
-        return sendResponse(res, {
-          statusCode: httpStatus.NOT_FOUND,
-          success: false,
-          message: 'User not found',
-        });
-      }
-
-      const updatedUser = { ...user.toObject(), ...updatedData };
-      const savedUser = await UserService.updateProfile(id, updatedUser);
-
-      return sendResponse(res, {
-        statusCode: httpStatus.OK,
-        success: true,
-        message: 'User profile updated successfully',
-        data: savedUser,
-      });
-    } catch (error) {
-      return sendResponse(res, {
-        statusCode: httpStatus.INTERNAL_SERVER_ERROR,
-        success: false,
-        message: 'Failed to update user profile',
-      });
-    }
-  }
-);
-
 export const UserController = {
   getAllUsers,
   getUserById,
   updateUserById,
   deleteUserById,
-  getMyProfile,
-  updateMyProfile,
 };

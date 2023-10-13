@@ -32,11 +32,16 @@ const getUserById = async (id: string): Promise<IUser | null> => {
 
 const updateUserById = async (
   id: string,
-  userData: IUser
+  updatedData: Partial<IUser>
 ): Promise<IUser | null> => {
   try {
-    const user = await User.findByIdAndUpdate(id, userData, { new: true });
-    return user;
+    const user = await User.findByIdAndUpdate(id, updatedData, { new: true });
+
+    if (user) {
+      return user;
+    } else {
+      throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+    }
   } catch (error) {
     throw new ApiError(
       httpStatus.INTERNAL_SERVER_ERROR,
@@ -57,40 +62,9 @@ const deleteUserById = async (id: string): Promise<IUser | null> => {
   }
 };
 
-const getProfile = async (id: string): Promise<IUser | null> => {
-  try {
-    const user = await User.findById({ _id: id });
-    return user;
-  } catch (error) {
-    throw new ApiError(
-      httpStatus.INTERNAL_SERVER_ERROR,
-      'Failed to retrieve user profile'
-    );
-  }
-};
-
-const updateProfile = async (
-  id: string,
-  updatedData: Partial<IUser>
-): Promise<IUser | null> => {
-  try {
-    const updatedUser = await User.findByIdAndUpdate(id, updatedData, {
-      new: true,
-    });
-    return updatedUser;
-  } catch (error) {
-    throw new ApiError(
-      httpStatus.INTERNAL_SERVER_ERROR,
-      'Failed to update user profile'
-    );
-  }
-};
-
 export const UserService = {
   getAllUsers,
   getUserById,
   updateUserById,
   deleteUserById,
-  getProfile,
-  updateProfile,
 };
