@@ -15,6 +15,7 @@ export type IUser = {
   bio?: string;
   gender?: string;
   number?: string;
+  image?:string;
 };
 
 export type UserModel = {

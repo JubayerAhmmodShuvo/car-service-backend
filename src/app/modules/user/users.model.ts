@@ -16,7 +16,8 @@ const userSchema = new Schema<IUser, UserModel>(
     bloodGroup: { type: String }, 
     bio: { type: String }, 
     gender: { type: String },
-    number:{type:Number}
+    number: { type: Number },
+    image:{type:String}
   },
   {
     timestamps: true,
