@@ -23,7 +23,7 @@ const getUserById: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const { id } = req.params;
     const user = await UserService.getUserById(id);
-    console.log(user);
+  
     if (user) {
       sendResponse(res, {
         statusCode: httpStatus.OK,
