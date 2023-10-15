@@ -1,73 +1,73 @@
 import { Response } from 'express';
 
-type IApiResponse<T> = {
-  statusCode: number;
-  success: boolean;
-  message?: string | null;
-  meta?: {
-    page?: number;
-    limit?: number;
-  } | null;
-  data?: T | null | undefined;
-  stack?: string | undefined;
-};
-
-const sendResponse = <T>(
-  res: Response,
-  data: IApiResponse<T>,
-  page?: number,
-  limit?: number
-): void => {
-  const responseData: IApiResponse<T> = {
-    statusCode: data.statusCode,
-    success: data.success,
-    message: data.success ? data.message || null : 'Request failed',
-    meta: page && limit ? { page, limit } : null,
-    data: data.data || null,
-    stack: data.stack,
-  };
-
-  res.status(data.statusCode).json(responseData);
-};
-
-export default sendResponse;
-
-
-// interface IResponse {
-//   success: boolean;
+// type IApiResponse<T> = {
 //   statusCode: number;
-//   message?: string;
+//   success: boolean;
+//   message?: string | null;
 //   meta?: {
-//     page: number;
-//     limit: number;
-//     total: number;
-//   };
-//   data?: unknown;
-// }
+//     page?: number;
+//     limit?: number;
+//   } | null;
+//   data?: T | null | undefined;
+//   stack?: string | undefined;
+// };
 
 // const sendResponse = <T>(
 //   res: Response,
-//   data: {
-//     statusCode: number;
-//     success: boolean;
-//     message?: string;
-//     meta?: {
-//       page: number;
-//       limit: number;
-//       total: number;
-//     };
-//     data?: T;
-//   }
-// ) => {
-//   const response: IResponse = {
-//     success: data.success,
+//   data: IApiResponse<T>,
+//   page?: number,
+//   limit?: number
+// ): void => {
+//   const responseData: IApiResponse<T> = {
 //     statusCode: data.statusCode,
-//     message: data.message || 'Success',
-//     meta: data.meta,
+//     success: data.success,
+//     message: data.success ? data.message || null : 'Request failed',
+//     meta: page && limit ? { page, limit } : null,
 //     data: data.data || null,
+//     stack: data.stack,
 //   };
 
-//   res.status(data.statusCode).json(response);
+//   res.status(data.statusCode).json(responseData);
 // };
 
 // export default sendResponse;
+
+
+interface IResponse {
+  success: boolean;
+  statusCode: number;
+  message?: string;
+  meta?: {
+    page: number;
+    limit: number;
+    total: number;
+  };
+  data?: unknown;
+}
+
+const sendResponse = <T>(
+  res: Response,
+  data: {
+    statusCode: number;
+    success: boolean;
+    message?: string;
+    meta?: {
+      page: number;
+      limit: number;
+      total: number;
+    };
+    data?: T | null;
+  }
+) => {
+  const response: IResponse = {
+    success: data.success,
+    statusCode: data.statusCode,
+    message: data.message || 'Success',
+    meta: data.meta,
+    data: data.data || null,
+  };
+
+  res.status(data.statusCode).json(response);
+};
+
+export default sendResponse;

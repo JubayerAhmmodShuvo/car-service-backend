@@ -9,7 +9,7 @@ import { AuthService } from './auth.service';
 
 const createUser = async (req: Request, res: Response) => {
   const { password, name, email } = req.body;
-  const { number, address, bio, bloodGroup, gender } = req.body; // These fields are now optional.
+  const { number, address, bio, bloodGroup, gender } = req.body; 
 
   const userData: IUser = {
     email,
@@ -18,7 +18,6 @@ const createUser = async (req: Request, res: Response) => {
     toObject: undefined,
   };
 
-  // Check if optional fields are provided and add them to the user data.
   if (number) {
     userData.number = number;
   }
