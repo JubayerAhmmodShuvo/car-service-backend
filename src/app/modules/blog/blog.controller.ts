@@ -16,13 +16,7 @@ const createBlog: RequestHandler = catchAsync(
         message: 'Blog created successfully',
         data: createdBlog,
       });
-    } else {
-      sendResponse(res, {
-        statusCode: httpStatus.INTERNAL_SERVER_ERROR,
-        success: false,
-        message: 'Failed to create a blog',
-      });
-    }
+    } 
   }
 );
 
@@ -38,13 +32,7 @@ const deleteBlog: RequestHandler = catchAsync(
         message: 'Blog deleted successfully',
         data: deletedBlog,
       });
-    } else {
-      sendResponse(res, {
-        statusCode: httpStatus.NOT_FOUND,
-        success: false,
-        message: 'Blog not found',
-      });
-    }
+    } 
   }
 );
 
@@ -86,7 +74,7 @@ const getAllBlogs: RequestHandler = catchAsync(
 
 const getAllBlogsByPagination: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
-    // Parse pagination and filter options from request query
+   
     const { page, limit, sortBy, sortOrder, search } = req.query;
 
     const blogs = await BlogService.getAllBlogsPagination({
@@ -118,13 +106,7 @@ const getBlogById: RequestHandler = catchAsync(
         message: 'Blog retrieved successfully',
         data: blog,
       });
-    } else {
-      sendResponse(res, {
-        statusCode: httpStatus.NOT_FOUND,
-        success: false,
-        message: 'Blog not found',
-      });
-    }
+    } 
   }
 );
 

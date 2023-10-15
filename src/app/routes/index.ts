@@ -5,6 +5,7 @@ import { UserAuth } from '../modules/auth/auth.route';
 import { AdminAuth } from '../modules/admin/admin.route';
 import { ServiceRoutes } from '../modules/service/service.routes';
 import { BlogRoutes } from '../modules/blog/blog.routes';
+import { FaqRoutes } from '../modules/frequentlyquestions/faq.routes';
 
 const router = express.Router();
 
@@ -29,6 +30,10 @@ const moduleRoutes = [
   {
     path: '/blog',
     route: BlogRoutes,
+  },
+  {
+    path: '/faq',
+    route: FaqRoutes,
   },
 ];
 
