@@ -14,5 +14,6 @@ router.patch('/:id', UserController.updateUserById);
     
     router.delete('/:id', UserController.deleteUserById);
     router.get('/', UserController.getAllUsers);
+    router.get('/all', UserController.getAllUsersPagination);
 
 export const UserRoutes = router;

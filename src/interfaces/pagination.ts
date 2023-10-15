@@ -7,4 +7,5 @@ export type IPaginationOptions = {
   maxPrice?: number;
   location?: string;
   searchTerm?: string;
+ 
 };

@@ -18,6 +18,62 @@ const getAllUsers = async (): Promise<IUser[]> => {
   }
 };
 
+const getAllUsersPagination = async (
+  paginationOptions: any
+): Promise<IUser[]> => {
+  try {
+    const {
+      page,
+      limit,
+      sortBy,
+      sortOrder,
+      minPrice,
+      maxPrice,
+      location,
+      searchTerm,
+    } = paginationOptions;
+
+    // Define a base query object with type definitions
+    const query: any = {};
+
+    // Add filtering conditions based on your paginationOptions
+    if (minPrice !== undefined) {
+      query.price = { $gte: minPrice };
+    }
+    if (maxPrice !== undefined) {
+      if (query.price) {
+        query.price.$lte = maxPrice;
+      } else {
+        query.price = { $lte: maxPrice };
+      }
+    }
+    if (location) {
+      query.location = location;
+    }
+    if (searchTerm) {
+      // Customize this part for your search requirements
+      query.$or = [
+        { username: { $regex: searchTerm, $options: 'i' } },
+        { email: { $regex: searchTerm, $options: 'i' } },
+        // Add other fields you want to search by
+      ];
+    }
+
+    // Find users based on the query and apply sorting and pagination
+    const users = await User.find(query)
+      .sort({ [sortBy]: sortOrder })
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+    return users;
+  } catch (error) {
+    throw new ApiError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      'Failed to retrieve users'
+    );
+  }
+};
+
 const getUserById = async (id: string): Promise<IUser | null> => {
   try {
     const user = await User.findById(id);
@@ -67,4 +123,5 @@ export const UserService = {
   getUserById,
   updateUserById,
   deleteUserById,
+  getAllUsersPagination
 };

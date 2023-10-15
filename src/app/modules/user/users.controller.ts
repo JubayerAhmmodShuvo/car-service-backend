@@ -6,6 +6,7 @@ import catchAsync from '../../../shared/catchAsync';
 import { IUser, UserModel } from './users.interface';
 import jwt from 'jsonwebtoken';
 import User from './users.model';
+import { paginationHelpers } from '../../../helpers/paginationHelper';
 
 const getAllUsers: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
@@ -15,6 +16,28 @@ const getAllUsers: RequestHandler = catchAsync(
       success: true,
       message: 'Users retrieved successfully',
       data: users,
+    });
+  }
+);
+
+const getAllUsersPagination: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    // Parse pagination options from the query parameters
+    const paginationOptions = paginationHelpers.calculatePagination(req.query);
+
+    // Get users with pagination information
+    const users = await UserService.getAllUsersPagination(paginationOptions);
+
+    // Create a meta object with pagination information
+  
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Users retrieved successfully',
+      data: users,
+
+      
     });
   }
 );
@@ -76,4 +99,5 @@ export const UserController = {
   getUserById,
   updateUserById,
   deleteUserById,
+  getAllUsersPagination,
 };

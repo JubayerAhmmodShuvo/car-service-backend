@@ -9,6 +9,7 @@ import { AuthService } from './auth.service';
 
 const createUser = async (req: Request, res: Response) => {
   const { password, name, email } = req.body;
+  const { number, address, bio, bloodGroup, gender } = req.body; // These fields are now optional.
 
   const userData: IUser = {
     email,
@@ -16,6 +17,23 @@ const createUser = async (req: Request, res: Response) => {
     name,
     toObject: undefined,
   };
+
+  // Check if optional fields are provided and add them to the user data.
+  if (number) {
+    userData.number = number;
+  }
+  if (address) {
+    userData.address = address;
+  }
+  if (bio) {
+    userData.bio = bio;
+  }
+  if (bloodGroup) {
+    userData.bloodGroup = bloodGroup;
+  }
+  if (gender) {
+    userData.gender = gender;
+  }
 
   const newUser = await AuthService.createUser(userData);
 
@@ -26,6 +44,7 @@ const createUser = async (req: Request, res: Response) => {
     data: newUser,
   });
 };
+
 
 const loginUser = catchAsync(async (req: Request, res: Response) => {
   const { ...loginData } = req.body;

@@ -6,7 +6,7 @@ export type IUser = {
   _id?: string;
   password: string;
   role?: string | undefined;
-  name: string;
+  name?: string;
   email: string;
   address?: string;
   budget?: number;

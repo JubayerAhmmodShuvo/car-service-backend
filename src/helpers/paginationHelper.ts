@@ -12,15 +12,15 @@ export type IOptions = {
 };
 
 export type IOptionsResult = {
-  page: number;
-  limit: number;
-  skip: number;
-  sortBy: string;
-  sortOrder: SortOrder;
-  minPrice: number;
-  maxPrice: number;
-  location: string;
-  searchTerm: string;
+  page?: number;
+  limit?: number;
+  skip?: number;
+  sortBy?: string;
+  sortOrder?: SortOrder;
+  minPrice?: number;
+  maxPrice?: number;
+  location?: string;
+  searchTerm?: string;
 };
 
 const calculatePagination = (options: IOptions): IOptionsResult => {
