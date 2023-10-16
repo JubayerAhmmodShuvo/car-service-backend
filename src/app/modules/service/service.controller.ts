@@ -26,7 +26,6 @@ const getAllServices: RequestHandler = async (req: Request, res: Response) => {
   try {
     const services = await ServiceService.getAllServices();
 
-   
     for (const service of services) {
       const userReviews = service.userReviews || [];
       if (userReviews.length > 0) {
@@ -34,7 +33,7 @@ const getAllServices: RequestHandler = async (req: Request, res: Response) => {
           (total, review) => total + review.rating,
           0
         );
-        const averageRating = (totalRating / userReviews.length) * 5; 
+        const averageRating = totalRating / userReviews.length;
         service.overallRating = averageRating;
       } else {
         service.overallRating = 0;
@@ -48,7 +47,6 @@ const getAllServices: RequestHandler = async (req: Request, res: Response) => {
       data: services,
     });
   } catch (error) {
-   
     sendResponse(res, {
       statusCode: httpStatus.INTERNAL_SERVER_ERROR,
       success: false,

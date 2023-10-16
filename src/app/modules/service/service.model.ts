@@ -1,12 +1,10 @@
-
-
 import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IService extends Document {
   title: string;
   email: string;
   description: string;
-  images?: string[];
+  images?: string;
   pricing: number;
   availability?: boolean;
   location: string;
@@ -24,7 +22,7 @@ export interface Review {
 const ServiceSchema: Schema = new Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
-  images: [String],
+  images: String,
   pricing: Number,
   availability: Boolean,
   location: String,
@@ -41,7 +39,7 @@ ServiceSchema.pre('save', function (next) {
       (total: any, review: { rating: any; }) => total + review.rating,
       0
     );
-    // Check if totalRating is a valid number, and if not, set overallRating to 0
+    
     this.overallRating = Number.isNaN(totalRating)
       ? 0
       : totalRating / this.userReviews.length;
