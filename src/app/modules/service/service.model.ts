@@ -2,21 +2,21 @@ import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IService extends Document {
   title: string;
-  email: string;
+  email?: string;
   description: string;
   images?: string;
   pricing: number;
   availability?: boolean;
-  location: string;
-  contactInfo: string;
+  location?: string;
+  contactInfo?: string;
   userReviews?: Review[];
   overallRating?: number;
 }
 
 export interface Review {
-  email: string;
+  email?: string;
   rating: number;
-  comment: string;
+  comment?: string;
 }
 
 const ServiceSchema: Schema = new Schema({

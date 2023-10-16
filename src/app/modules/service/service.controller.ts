@@ -125,13 +125,13 @@ const addReview: RequestHandler = async (req: Request, res: Response) => {
 
     if (service) {
       if (service.userReviews === undefined) {
-        service.userReviews = []; // Initialize userReviews if it's undefined
+        service.userReviews = []; 
       }
 
       service.userReviews.push({ email, rating, comment });
       await service.save();
 
-      // Recalculate overall rating
+      
       if (service.userReviews.length > 0) {
         const totalRating = service.userReviews.reduce(
           (total, review) => total + review.rating,
