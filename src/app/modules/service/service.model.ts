@@ -11,10 +11,11 @@ export interface IService extends Document {
   contactInfo?: string;
   userReviews?: Review[];
   overallRating?: number;
+  category?: string;
 }
 
 export interface Review {
-  email?: string;
+  name: string;
   rating: number;
   comment?: string;
 }
@@ -27,9 +28,10 @@ const ServiceSchema: Schema = new Schema({
   availability: Boolean,
   location: String,
   contactInfo: String,
-  userReviews: [{ email: String, rating: Number, comment: String }],
+  userReviews: [{name: String, rating: Number, comment: String }],
   overallRating: { type: Number, default: 0 },
   email: String,
+  category: String,
 });
 
 

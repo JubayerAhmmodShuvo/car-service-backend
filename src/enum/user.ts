@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 export enum UserRole {
-  Seller = 'seller',
-  Buyer = 'buyer',
+  User = 'user',
+  Super_Admin = 'super_admin',
   Admin = 'admin',
 }

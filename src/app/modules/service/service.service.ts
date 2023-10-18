@@ -104,6 +104,28 @@ const deleteServiceById = async (id: string): Promise<IService | null> => {
 //     }
 //   }
 
+const searchServices = async (query: string): Promise<IService[]> => {
+  try {
+  
+    const services = await ServiceModel.find({
+      $or: [
+        { title: { $regex: query, $options: 'i' } },
+        { location: { $regex: query, $options: 'i' } },
+        { category: { $regex: query, $options: 'i' } },
+      ],
+    }).exec();
+
+    console.log('Query executed successfully.');
+    return services;
+  } catch (error) {
+    console.error('Error in searchServices:', error);
+    throw new ApiError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      'Failed to search services'
+    );
+  }
+};
+
 
 
 export const ServiceService = {
@@ -112,5 +134,5 @@ export const ServiceService = {
   getServiceById,
   updateServiceById,
   deleteServiceById,
-  
+  searchServices,
 };

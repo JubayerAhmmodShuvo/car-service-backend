@@ -110,9 +110,8 @@ const deleteServiceById: RequestHandler = catchAsync(
 const addReview: RequestHandler = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { email, rating, comment } = req.body;
-
-    // Validate that rating is a valid number and within the range (0-5)
+    const { name, rating, comment } = req.body;
+   
     if (typeof rating !== 'number' || rating < 0 || rating > 5) {
       return sendResponse(res, {
         statusCode: httpStatus.BAD_REQUEST,
@@ -128,7 +127,7 @@ const addReview: RequestHandler = async (req: Request, res: Response) => {
         service.userReviews = []; 
       }
 
-      service.userReviews.push({ email, rating, comment });
+      service.userReviews.push({ name, rating, comment });
       await service.save();
 
       
@@ -166,6 +165,30 @@ const addReview: RequestHandler = async (req: Request, res: Response) => {
 };
 
 
+const searchServices: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    try {
+      const query: string = req.query.query as string;
+     
+      const services = await ServiceService.searchServices(query);
+     
+
+      sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Services retrieved successfully',
+        data: services,
+      });
+    } catch (error) {
+      sendResponse(res, {
+        statusCode: httpStatus.INTERNAL_SERVER_ERROR,
+        success: false,
+        message: 'Failed to retrieve services',
+        data: error,
+      });
+    }
+  }
+);
 
 
 
@@ -176,4 +199,5 @@ export const ServiceController = {
   updateServiceById,
   deleteServiceById,
   addReview,
+  searchServices,
 };

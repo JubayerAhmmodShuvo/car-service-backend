@@ -1,10 +1,12 @@
 import express from 'express';
 import { BlogController } from './blog.controller';
+import auth from '../../middlewares/auth';
+import { UserRole } from '../../../enum/user';
 
 
 
 const router = express.Router();
-router.post('/', BlogController.createBlog);
+router.post('/', auth(UserRole.Admin), BlogController.createBlog);
 
 router.patch('/:id', BlogController.updateBlog);
 router.get('/:id', BlogController.updateBlog);
