@@ -117,11 +117,21 @@ const deleteUserById = async (id: string): Promise<IUser | null> => {
     );
   }
 };
+const createUser = async (userData: IUser): Promise<IUser | null> => {
+  try {
+    const user = new User(userData);
+    await user.save();
+    return user;
+  } catch (error) {
+    throw new Error('Failed to create user');
+  }
+};
 
 export const UserService = {
   getAllUsers,
   getUserById,
   updateUserById,
   deleteUserById,
-  getAllUsersPagination
+  getAllUsersPagination,
+  createUser,
 };

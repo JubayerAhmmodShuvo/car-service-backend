@@ -94,10 +94,71 @@ const deleteUserById: RequestHandler = catchAsync(
   }
 );
 
+const createUser = async (req: Request, res: Response) => {
+  try {
+    const {
+      name,
+      email,
+      password,
+      role,
+      address,
+      bloodGroup,
+      bio,
+      gender,
+      number,
+    } = req.body;
+
+    // Ensure that the provided "role" is either "admin" or "user"
+    if (role !== 'admin' && role !== 'user') {
+      return sendResponse(res, {
+        statusCode: httpStatus.BAD_REQUEST,
+        success: false,
+        message: 'Invalid role specified',
+      });
+    }
+
+    // Create a new user with the provided values
+    const userData: IUser = {
+      name,
+      email,
+      password,
+      role,
+      address,
+      bloodGroup,bio,gender,number
+    };
+
+    const user = await UserService.createUser(userData);
+
+    if (user) {
+      return sendResponse(res, {
+        statusCode: httpStatus.CREATED,
+        success: true,
+        message: 'User created successfully',
+        data: user,
+      });
+    } else {
+      return sendResponse(res, {
+        statusCode: httpStatus.INTERNAL_SERVER_ERROR,
+        success: false,
+        message: 'User creation failed',
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    return sendResponse(res, {
+      statusCode: httpStatus.INTERNAL_SERVER_ERROR,
+      success: false,
+      message: 'User creation failed',
+    });
+  }
+};
+
+
 export const UserController = {
   getAllUsers,
   getUserById,
   updateUserById,
   deleteUserById,
   getAllUsersPagination,
+  createUser,
 };

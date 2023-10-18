@@ -1,7 +1,6 @@
 import bcrypt from 'bcrypt';
 import { Schema, model } from 'mongoose';
 import config from '../../../config';
-import { UserRole } from '../../../enum/user';
 import { IUser, UserModel } from './users.interface';
 
 const userSchema = new Schema<IUser, UserModel>(
@@ -10,14 +9,14 @@ const userSchema = new Schema<IUser, UserModel>(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     role: { type: String, default: 'user' },
-        address: { type: String }, 
-    budget: { type: Number }, 
-    income: { type: Number }, 
-    bloodGroup: { type: String }, 
-    bio: { type: String }, 
+    address: { type: String },
+    budget: { type: Number },
+    income: { type: Number },
+    bloodGroup: { type: String },
+    bio: { type: String },
     gender: { type: String },
     number: { type: Number },
-    image:{type:String}
+    image: { type: String },
   },
   {
     timestamps: true,
@@ -36,7 +35,7 @@ userSchema.statics.isUserExist = async function (
 ): Promise<Pick<IUser, '_id' | 'email' | 'password' | 'role' | 'name'> | null> {
   return await User.findOne(
     { email },
-    { _id: 1, email: 1, password: 1, role: 1, name:1 }
+    { _id: 1, email: 1, password: 1, role: 1, name: 1 }
   );
 };
 
