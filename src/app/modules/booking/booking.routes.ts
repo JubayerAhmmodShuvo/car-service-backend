@@ -7,14 +7,18 @@ import { BookingController } from './booking.controller';
 const router = express.Router();
 
 router.post('/create-booking', BookingController.createBooking);
+router.patch('/cancel/:id', BookingController.cancelBooking);
+
+
+router.patch('/approve/:id', BookingController.approveBooking);
 router.patch('/:id', BookingController.updateBookingById);
 
+router.get('/', BookingController.getAllBookings);
 router.get('/:id', BookingController.getBookingById);
 
 router.delete('/:id', BookingController.deleteBookingById);
-router.get('/:id/bookings', BookingController.getUserBookingOrdersController);
+router.get('/bookings/:id', BookingController.getUserBookingOrdersController);
 
-router.get('/', BookingController.getAllBookings);
 
 
 export const BookingRoutes = router;

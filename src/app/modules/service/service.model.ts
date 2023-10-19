@@ -20,19 +20,31 @@ export interface Review {
   comment?: string;
 }
 
-const ServiceSchema: Schema = new Schema({
-  title: { type: String, required: true },
-  description: { type: String, required: true },
-  images: String,
-  pricing: Number,
-  availability: Boolean,
-  location: String,
-  contactInfo: String,
-  userReviews: [{name: String, rating: Number, comment: String }],
-  overallRating: { type: Number, default: 0 },
-  email: String,
-  category: String,
-});
+const ServiceSchema: Schema = new Schema(
+  {
+    title: { type: String, required: true },
+    description: { type: String, required: true },
+    images: String,
+    pricing: Number,
+    availability: Boolean,
+    location: String,
+    contactInfo: String,
+    userReviews: [
+      {
+        name: String,
+        rating: Number,
+        comment: String,
+      },
+    ],
+    overallRating: { type: Number, default: 0 },
+    email: String,
+    category: String,
+  },
+  {
+    timestamps: true, 
+  }
+);
+
 
 
 ServiceSchema.pre('save', function (next) {

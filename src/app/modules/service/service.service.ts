@@ -115,7 +115,7 @@ const searchServices = async (query: string): Promise<IService[]> => {
       ],
     }).exec();
 
-    console.log('Query executed successfully.');
+  
     return services;
   } catch (error) {
     console.error('Error in searchServices:', error);

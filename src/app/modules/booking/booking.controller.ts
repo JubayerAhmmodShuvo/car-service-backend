@@ -1,14 +1,15 @@
-import { Request, RequestHandler, Response } from 'express';
+import { NextFunction, Request, RequestHandler, Response } from 'express';
 import httpStatus from 'http-status';
 import sendResponse from '../../../shared/sendResponse';
 import { BookingService } from './booking.service';
 import catchAsync from '../../../shared/catchAsync';
-import { IBooking } from './booking.model';
+import BookingModel, { IBooking } from './booking.model';
+import ApiError from '../../../errors/ApiError';
 
 const createBooking: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const bookingData: IBooking = req.body;
-    console.log(bookingData);
+ 
     const booking = await BookingService.createBooking(bookingData);
     sendResponse(res, {
       statusCode: httpStatus.CREATED,
@@ -109,6 +110,60 @@ const getUserBookingOrdersController: RequestHandler = async (
   }
 };
 
+const cancelBooking = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { id } = req.params;
+  try {
+    const updatedBooking = await BookingModel.findByIdAndUpdate(
+      id,
+      { status: 'cancelled' }, 
+      { new: true }
+    ).exec();
+
+    if (!updatedBooking) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'Booking not found');
+    }
+
+    res.status(httpStatus.OK).json({
+      success: true,
+      message: 'Booking cancelled successfully',
+      data: updatedBooking,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const approveBooking = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { id } = req.params;
+  try {
+    const updatedBooking = await BookingModel.findByIdAndUpdate(
+      id,
+      { status: 'approved' }, 
+      { new: true }
+    ).exec();
+
+    if (!updatedBooking) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'Booking not found');
+    }
+
+    res.status(httpStatus.OK).json({
+      success: true,
+      message: 'Booking approved successfully',
+      data: updatedBooking,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 
 
 
@@ -119,4 +174,6 @@ export const BookingController = {
   updateBookingById,
   deleteBookingById,
   getUserBookingOrdersController,
+  cancelBooking,
+  approveBooking,
 };
