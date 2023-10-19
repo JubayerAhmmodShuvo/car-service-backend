@@ -6,13 +6,21 @@ import { UserRole } from '../../../enum/user';
 
 
 const router = express.Router();
-router.post('/', auth(UserRole.Admin), BlogController.createBlog);
+router.post('/', auth(UserRole.Admin,UserRole.Super_Admin), BlogController.createBlog);
 
-router.patch('/:id', BlogController.updateBlog);
-router.get('/:id', BlogController.updateBlog);
+router.patch('/:id',auth(UserRole.Admin,UserRole.Super_Admin), BlogController.updateBlog);
+router.get('/:id', BlogController.getBlogById);
 
-router.delete('/:id', BlogController.deleteBlog);
-router.get('/', BlogController.getAllBlogs);
-router.get('/all', BlogController.getAllBlogsByPagination);
+router.delete('/:id',auth(UserRole.Admin,UserRole.Super_Admin), BlogController.deleteBlog);
+router.get(
+  '/',
+  auth(UserRole.Admin, UserRole.Super_Admin, UserRole.User),
+  BlogController.getAllBlogs
+);
+router.get(
+  '/all',
+  auth(UserRole.Admin, UserRole.Super_Admin, UserRole.User),
+  BlogController.getAllBlogsByPagination
+);
 
 export const BlogRoutes = router;
