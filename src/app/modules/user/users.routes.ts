@@ -6,14 +6,12 @@ import { UserRole } from '../../../enum/user';
 
 const router = express.Router();
 
-
-
-     router.post('/create-user', UserController.createUser);
+router.post('/create-user', UserController.createUser);
 router.patch('/:id', UserController.updateUserById);
-    router.get('/:id', UserController.getUserById);
-    
-    router.delete('/:id', UserController.deleteUserById);
-    router.get('/', UserController.getAllUsers);
-    router.get('/all', UserController.getAllUsersPagination);
+router.get('/:id', UserController.getUserById);
+
+router.delete('/:id', UserController.deleteUserById);
+router.get('/', UserController.getAllUsers);
+router.get('/all', UserController.getAllUsersPagination);
 
 export const UserRoutes = router;

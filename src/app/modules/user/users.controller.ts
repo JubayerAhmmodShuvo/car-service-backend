@@ -5,7 +5,7 @@ import { UserService } from './users.service';
 import catchAsync from '../../../shared/catchAsync';
 import { IUser, UserModel } from './users.interface';
 import jwt from 'jsonwebtoken';
-import User from './users.model';
+
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 
 const getAllUsers: RequestHandler = catchAsync(
@@ -22,22 +22,15 @@ const getAllUsers: RequestHandler = catchAsync(
 
 const getAllUsersPagination: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
-    // Parse pagination options from the query parameters
     const paginationOptions = paginationHelpers.calculatePagination(req.query);
 
-    // Get users with pagination information
     const users = await UserService.getAllUsersPagination(paginationOptions);
-
-    // Create a meta object with pagination information
-  
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
       message: 'Users retrieved successfully',
       data: users,
-
-      
     });
   }
 );
@@ -46,7 +39,7 @@ const getUserById: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const { id } = req.params;
     const user = await UserService.getUserById(id);
-  
+
     if (user) {
       sendResponse(res, {
         statusCode: httpStatus.OK,
@@ -108,7 +101,6 @@ const createUser = async (req: Request, res: Response) => {
       number,
     } = req.body;
 
-    // Ensure that the provided "role" is either "admin" or "user"
     if (role !== 'admin' && role !== 'user') {
       return sendResponse(res, {
         statusCode: httpStatus.BAD_REQUEST,
@@ -117,14 +109,16 @@ const createUser = async (req: Request, res: Response) => {
       });
     }
 
-    // Create a new user with the provided values
     const userData: IUser = {
       name,
       email,
       password,
       role,
       address,
-      bloodGroup,bio,gender,number
+      bloodGroup,
+      bio,
+      gender,
+      number,
     };
 
     const user = await UserService.createUser(userData);
@@ -152,7 +146,6 @@ const createUser = async (req: Request, res: Response) => {
     });
   }
 };
-
 
 export const UserController = {
   getAllUsers,

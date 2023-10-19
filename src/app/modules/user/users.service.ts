@@ -33,10 +33,8 @@ const getAllUsersPagination = async (
       searchTerm,
     } = paginationOptions;
 
-    // Define a base query object with type definitions
     const query: any = {};
 
-    // Add filtering conditions based on your paginationOptions
     if (minPrice !== undefined) {
       query.price = { $gte: minPrice };
     }
@@ -51,15 +49,12 @@ const getAllUsersPagination = async (
       query.location = location;
     }
     if (searchTerm) {
-      // Customize this part for your search requirements
       query.$or = [
         { username: { $regex: searchTerm, $options: 'i' } },
         { email: { $regex: searchTerm, $options: 'i' } },
-        // Add other fields you want to search by
       ];
     }
 
-    // Find users based on the query and apply sorting and pagination
     const users = await User.find(query)
       .sort({ [sortBy]: sortOrder })
       .skip((page - 1) * limit)
