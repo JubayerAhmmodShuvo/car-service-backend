@@ -8,6 +8,7 @@ import { IBooking } from './booking.model';
 const createBooking: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const bookingData: IBooking = req.body;
+    console.log(bookingData);
     const booking = await BookingService.createBooking(bookingData);
     sendResponse(res, {
       statusCode: httpStatus.CREATED,
@@ -83,10 +84,39 @@ const deleteBookingById: RequestHandler = catchAsync(
   }
 );
 
+const getUserBookingOrdersController: RequestHandler = async (
+  req: Request,
+  res: Response
+) => {
+  const { id } = req.params; 
+
+  try {
+    const userBookings = await BookingService.getUserBookingOrders(id);
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'User booking orders retrieved successfully',
+      data: userBookings,
+    });
+  } catch (error) {
+    sendResponse(res, {
+      statusCode: httpStatus.INTERNAL_SERVER_ERROR,
+      success: false,
+      message: 'Failed to retrieve user booking orders',
+      data: error,
+    });
+  }
+};
+
+
+
+
 export const BookingController = {
   createBooking,
   getAllBookings,
   getBookingById,
   updateBookingById,
   deleteBookingById,
+  getUserBookingOrdersController,
 };

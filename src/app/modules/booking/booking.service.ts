@@ -69,10 +69,27 @@ const deleteBookingById = async (id: string): Promise<IBooking | null> => {
   }
 };
 
+ const getUserBookingOrders = async (
+  userId: string
+): Promise<IBooking[]> => {
+  try {
+    const userBookings = await BookingModel.find({ user: userId }).exec();
+    return userBookings;
+  } catch (error) {
+    throw new ApiError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      'Failed to get user booking orders'
+    );
+  }
+};
+
+
+
 export const BookingService = {
   createBooking,
   getAllBookings,
   getBookingById,
   updateBookingById,
   deleteBookingById,
+  getUserBookingOrders,
 };

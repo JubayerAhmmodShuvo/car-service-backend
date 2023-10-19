@@ -8,9 +8,12 @@ const router = express.Router();
 
 router.post('/create-booking', BookingController.createBooking);
 router.patch('/:id', BookingController.updateBookingById);
+
 router.get('/:id', BookingController.getBookingById);
 
 router.delete('/:id', BookingController.deleteBookingById);
+router.get('/:id/bookings', BookingController.getUserBookingOrdersController);
+
 router.get('/', BookingController.getAllBookings);
 
 
