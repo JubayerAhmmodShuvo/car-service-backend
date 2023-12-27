@@ -31,9 +31,6 @@ const stripe = new Stripe(stripeApiKey, {
 });
 
 
-
-
-
 app.use('/api/v1/', router);
 // app.use('/api/v1/orders', OrderRoutes);
 app.use((error: any, req: Request, res: Response, next: NextFunction) => {
