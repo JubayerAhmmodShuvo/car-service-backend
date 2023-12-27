@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
 import express, { Application, NextFunction, Response, Request } from 'express';
-
+import Stripe from 'stripe';
 import cors from 'cors';
 import httpStatus from 'http-status';
 import globalErrorHandler from './app/middlewares/globalErrorHandler';
@@ -19,6 +19,19 @@ app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+const stripeApiKey = process.env.STRIPE_KEY;
+
+if (!stripeApiKey) {
+  throw new Error('Stripe API key is not defined.');
+}
+
+const stripe = new Stripe(stripeApiKey, {
+  apiVersion: '2023-10-16',
+});
+
+
+
 
 
 app.use('/api/v1/', router);
