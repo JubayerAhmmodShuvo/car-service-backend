@@ -33,8 +33,8 @@ const createCheckoutSession = async (product: any) => {
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
-      success_url: `${DOMAIN}/payment/success`,
-      cancel_url: `${DOMAIN}/payment/cancel`,
+      success_url: `${DOMAIN}/user/payment/success`,
+      cancel_url: `${DOMAIN}/user/payment/cancel`,
     });
 
     return {
